@@ -1,0 +1,3657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CV Studio Premium</title>
+
+<!-- IMAGE CROP LIBRARY -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
+>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --navy:#101b3d;
+    --navy2:#172653;
+    --blue:#2c5aa0;
+    --gold:#c9a44c;
+    --light:#f4f6fa;
+    --text:#202633;
+    --muted:#687080;
+    --border:#dfe3ea;
+    --white:#fff;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#eef1f6;
+    color:var(--text);
+}
+
+.app{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+.brand{
+    text-align:center;
+    margin-bottom:22px;
+}
+
+.brand h1{
+    font-size:28px;
+    letter-spacing:2px;
+    color:var(--navy);
+}
+
+.brand p{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:13px;
+    letter-spacing:1px;
+}
+
+.form-card{
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:25px;
+    box-shadow:0 10px 35px rgba(16,27,61,.10);
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:10px 0 18px;
+    color:var(--navy);
+    font-size:18px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.section-title::before{
+    content:"";
+    width:9px;
+    height:28px;
+    background:linear-gradient(180deg,var(--gold),var(--blue));
+    border-radius:8px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.field.full{
+    grid-column:1/-1;
+}
+
+label{
+    font-size:12px;
+    font-weight:bold;
+    color:#505a6c;
+    letter-spacing:.4px;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:12px;
+    outline:none;
+    background:#fafbfc;
+    font-size:14px;
+    color:var(--text);
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(44,90,160,.10);
+}
+
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.photo-box{
+    border:2px dashed #cbd2df;
+    border-radius:15px;
+    padding:18px;
+    text-align:center;
+    background:#fafbfc;
+}
+
+.photo-preview{
+    width:125px;
+    height:125px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid white;
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+    display:none;
+    margin:0 auto 12px;
+}
+
+.photo-placeholder{
+    width:125px;
+    height:125px;
+    border-radius:50%;
+    margin:0 auto 12px;
+    background:#e8ebf1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8b93a3;
+    font-size:12px;
+}
+
+input[type=file]{
+    padding:8px;
+}
+
+.dynamic-card{
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:13px;
+    background:#fbfcfe;
+}
+
+.dynamic-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:13px;
+}
+
+.dynamic-head strong{
+    color:var(--navy);
+}
+
+.remove-btn{
+    border:0;
+    background:#ffe8e8;
+    color:#b42d2d;
+    border-radius:7px;
+    padding:7px 10px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.add-btn{
+    border:0;
+    background:var(--navy);
+    color:white;
+    padding:11px 16px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+    margin-top:3px;
+}
+
+.add-btn:hover{
+    background:var(--blue);
+}
+
+.edit-photo-btn{
+    border:0;
+    background:var(--gold);
+    color:white;
+    padding:10px 16px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+    display:none;
+    margin:8px auto 0;
+}
+
+.preview-area{
+    margin-top:35px;
+}
+
+.preview-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+    gap:15px;
+}
+
+.preview-top h2{
+    color:var(--navy);
+    font-size:20px;
+    letter-spacing:1px;
+}
+
+.download-btn{
+    border:0;
+    background:linear-gradient(135deg,var(--navy),var(--blue));
+    color:white;
+    padding:12px 18px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+    box-shadow:0 7px 20px rgba(16,27,61,.18);
+}
+
+.download-btn:disabled{
+    opacity:.65;
+    cursor:not-allowed;
+}
+
+.download-btn:active{
+    transform:scale(.98);
+}
+
+.cv-wrap{
+    overflow-x:auto;
+    padding:10px 0 30px;
+}
+
+.cv{
+    width:210mm;
+    min-height:297mm;
+    margin:auto;
+    background:white;
+    display:grid;
+    grid-template-columns:34% 66%;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 12px 40px rgba(0,0,0,.18);
+}
+
+.sidebar{
+    background:var(--navy);
+    color:white;
+    padding:28px 20px 45px;
+    position:relative;
+}
+
+.profile{
+    text-align:center;
+    margin-bottom:24px;
+}
+
+.profile img{
+    width:125px;
+    height:125px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid rgba(255,255,255,.92);
+    background:#26345b;
+}
+
+.profile .no-photo{
+    width:125px;
+    height:125px;
+    border-radius:50%;
+    margin:auto;
+    background:#26345b;
+    border:5px solid rgba(255,255,255,.92);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    color:#ccd3e4;
+}
+
+.sidebar-section{
+    margin-top:23px;
+}
+
+.sidebar-title{
+    font-size:12px;
+    font-weight:bold;
+    letter-spacing:1.7px;
+    border-bottom:1px solid rgba(255,255,255,.28);
+    padding-bottom:8px;
+    margin-bottom:12px;
+}
+
+.side-item{
+    margin-bottom:10px;
+    font-size:10.5px;
+    line-height:1.55;
+    color:#edf0f8;
+    word-break:break-word;
+}
+
+.side-label{
+    color:#aebbd8;
+    display:block;
+    font-size:8.5px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    margin-bottom:1px;
+}
+
+.skills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+}
+
+.skill{
+    border:1px solid rgba(255,255,255,.30);
+    border-radius:20px;
+    padding:5px 8px;
+    font-size:8.5px;
+    color:white;
+}
+
+.main{
+    padding:30px 28px 50px;
+    position:relative;
+}
+
+.header-name{
+    font-size:29px;
+    font-weight:800;
+    letter-spacing:1.3px;
+    color:var(--navy);
+    text-transform:uppercase;
+    line-height:1.1;
+}
+
+.header-job{
+    margin-top:7px;
+    color:var(--blue);
+    font-size:12px;
+    font-weight:bold;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.decor-line{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    margin:12px 0 14px;
+}
+
+.decor-line span:nth-child(1){
+    width:28px;
+    height:3px;
+    background:var(--gold);
+}
+
+.decor-line span:nth-child(2){
+    width:70px;
+    height:1px;
+    background:#cfd4dc;
+}
+
+.header-contact{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 15px;
+    font-size:9.5px;
+    color:#5c6575;
+    margin-bottom:25px;
+}
+
+.main-section{
+    margin-bottom:23px;
+}
+
+.main-section-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-bottom:13px;
+}
+
+.main-section-title .circle{
+    width:22px;
+    height:22px;
+    min-width:22px;
+    border-radius:50%;
+    background:var(--navy);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:10px;
+}
+
+.main-section-title h2{
+    font-size:12px;
+    color:var(--navy);
+    letter-spacing:1.4px;
+    text-transform:uppercase;
+    white-space:nowrap;
+}
+
+.main-section-title .rule{
+    height:1px;
+    background:#d8dce3;
+    flex:1;
+}
+
+.objective{
+    font-size:10px;
+    line-height:1.7;
+    color:#4c5565;
+    text-align:justify;
+}
+
+.timeline{
+    position:relative;
+    margin-left:8px;
+    padding-left:22px;
+}
+
+.timeline::before{
+    content:"";
+    position:absolute;
+    left:4px;
+    top:4px;
+    bottom:4px;
+    width:1px;
+    background:#ccd2dc;
+}
+
+.exp{
+    position:relative;
+    margin-bottom:18px;
+}
+
+.exp::before{
+    content:"";
+    position:absolute;
+    left:-22px;
+    top:4px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--blue);
+    border:2px solid white;
+    box-shadow:0 0 0 1px var(--blue);
+}
+
+.exp-title{
+    font-size:11px;
+    font-weight:bold;
+    color:var(--navy);
+}
+
+.exp-company{
+    font-size:9.5px;
+    color:var(--blue);
+    font-weight:bold;
+    margin-top:3px;
+}
+
+.exp-duration{
+    font-size:8.5px;
+    color:#858d9c;
+    margin-top:2px;
+}
+
+.exp-description{
+    font-size:9.5px;
+    color:#505968;
+    line-height:1.55;
+    margin-top:6px;
+    white-space:pre-line;
+}
+
+.edu-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:8.5px;
+}
+
+.edu-table th{
+    background:var(--navy);
+    color:white;
+    padding:7px 5px;
+    text-align:left;
+}
+
+.edu-table td{
+    border:1px solid #d9dee7;
+    padding:6px 5px;
+    vertical-align:top;
+}
+
+.edu-table tr:nth-child(even){
+    background:#f7f8fa;
+}
+
+.reference{
+    border-left:3px solid var(--gold);
+    padding-left:10px;
+    margin-bottom:12px;
+}
+
+.ref-name{
+    font-weight:bold;
+    color:var(--navy);
+    font-size:10px;
+}
+
+.ref-info{
+    font-size:8.5px;
+    line-height:1.55;
+    color:#626b7a;
+}
+
+.cv::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:17px;
+    background:linear-gradient(
+        135deg,
+        var(--navy) 0%,
+        var(--navy) 70%,
+        #8e98aa 70%,
+        #8e98aa 82%,
+        var(--gold) 82%
+    );
+}
+
+.app-footer{
+    text-align:center;
+    padding:22px 10px 8px;
+    color:#747d8c;
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+.app-footer strong{
+    color:var(--navy);
+}
+
+.app-footer .dev{
+    display:block;
+    margin-top:5px;
+    font-weight:800;
+    color:var(--gold);
+    letter-spacing:1.5px;
+}
+
+
+/* =====================================================
+   CROP MODAL
+===================================================== */
+
+.crop-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    z-index:99999;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+}
+
+.crop-box{
+    width:100%;
+    max-width:650px;
+    background:white;
+    border-radius:16px;
+    padding:15px;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+
+.crop-title{
+    font-size:18px;
+    font-weight:bold;
+    color:var(--navy);
+    margin-bottom:12px;
+}
+
+.crop-image-wrap{
+    width:100%;
+    height:65vh;
+    min-height:300px;
+    overflow:hidden;
+    background:#111;
+}
+
+#cropImage{
+    display:block;
+    max-width:100%;
+}
+
+.crop-actions{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+}
+
+.crop-actions button{
+    flex:1;
+    border:0;
+    padding:12px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.crop-apply{
+    background:var(--navy);
+    color:white;
+}
+
+.crop-cancel{
+    background:#eee;
+    color:#333;
+}
+
+
+@media(max-width:700px){
+
+    .app{
+        padding:12px;
+    }
+
+    .form-card{
+        padding:15px;
+        border-radius:13px;
+    }
+
+    .grid,
+    .grid-3{
+        grid-template-columns:1fr;
+    }
+
+    .field.full{
+        grid-column:auto;
+    }
+
+    .preview-top{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .download-btn{
+        width:100%;
+    }
+
+    .cv{
+        margin-left:0;
+    }
+
+    .crop-image-wrap{
+        height:58vh;
+    }
+
+}
+
+
+/* =====================================================
+   PRINT / SAVE PDF
+   SHARP TEXT PDF
+===================================================== */
+
+@media print{
+
+    *{
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+
+    html,
+    body{
+        width:210mm;
+        min-width:210mm;
+        margin:0 !important;
+        padding:0 !important;
+        background:white !important;
+    }
+
+    body{
+        overflow:visible !important;
+    }
+
+    .app{
+        width:210mm !important;
+        max-width:210mm !important;
+        margin:0 !important;
+        padding:0 !important;
+    }
+
+    .app > :not(.preview-area){
+        display:none !important;
+    }
+
+    .preview-area{
+        margin:0 !important;
+        padding:0 !important;
+        width:210mm !important;
+    }
+
+    .preview-top{
+        display:none !important;
+    }
+
+    .cv-wrap{
+        width:210mm !important;
+        overflow:visible !important;
+        padding:0 !important;
+        margin:0 !important;
+    }
+
+    .cv{
+        width:210mm !important;
+        min-height:297mm !important;
+        height:297mm !important;
+        margin:0 !important;
+        box-shadow:none !important;
+        page-break-after:avoid !important;
+        break-after:avoid !important;
+    }
+
+    @page{
+        size:A4 portrait;
+        margin:0;
+    }
+
+}
+
+
+/* =====================================================
+   PDF MODE
+===================================================== */
+
+body.pdf-mode{
+    background:white !important;
+}
+
+body.pdf-mode .app > :not(.preview-area){
+    display:none !important;
+}
+
+body.pdf-mode .preview-top{
+    display:none !important;
+}
+
+body.pdf-mode .cv-wrap{
+    padding:0 !important;
+    overflow:visible !important;
+}
+
+body.pdf-mode .cv{
+    margin:0 !important;
+    box-shadow:none !important;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- BRAND -->
+
+    <div class="brand">
+
+        <h1>
+            CV STUDIO PREMIUM
+        </h1>
+
+        <p>
+            Professional • Premium • ATS Friendly
+        </p>
+
+    </div>
+
+
+    <!-- FORM -->
+
+    <div class="form-card">
+
+
+        <!-- BASIC INFORMATION -->
+
+        <div class="section-title">
+            Basic Information
+        </div>
+
+
+        <div class="grid">
+
+
+            <div class="field">
+
+                <label>
+                    FULL NAME
+                </label>
+
+                <input
+                    id="fullName"
+                    type="text"
+                    placeholder="Enter full name"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    JOB TITLE
+                </label>
+
+                <input
+                    id="jobTitle"
+                    type="text"
+                    placeholder="e.g. Quality Inspector"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    PHONE
+                </label>
+
+                <input
+                    id="phone"
+                    type="text"
+                    placeholder="+880 1XXXXXXXXX"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    EMAIL
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="example@email.com"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    LOCATION
+                </label>
+
+                <input
+                    id="location"
+                    type="text"
+                    placeholder="City, Bangladesh"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    WEBSITE / LINKEDIN
+                </label>
+
+                <input
+                    id="website"
+                    type="text"
+                    placeholder="linkedin.com/in/username"
+                >
+
+            </div>
+
+
+            <!-- PHOTO -->
+
+            <div class="field full">
+
+                <label>
+                    PROFILE PHOTO
+                </label>
+
+
+                <div class="photo-box">
+
+
+                    <img
+                        id="photoPreview"
+                        class="photo-preview"
+                        alt="Profile Photo"
+                    >
+
+
+                    <div
+                        id="photoPlaceholder"
+                        class="photo-placeholder"
+                    >
+                        PROFILE PHOTO
+                    </div>
+
+
+                    <input
+                        id="photo"
+                        type="file"
+                        accept="image/*"
+                    >
+
+
+                    <button
+                        id="editPhotoBtn"
+                        type="button"
+                        class="edit-photo-btn"
+                    >
+                        ✂ Edit / Crop Photo
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- OBJECTIVE -->
+
+        <div class="section-title">
+            Career Objective
+        </div>
+
+
+        <div class="field">
+
+            <textarea
+                id="objective"
+                placeholder="Write your professional career objective..."
+            ></textarea>
+
+        </div>
+
+
+        <!-- PERSONAL INFORMATION -->
+
+        <div class="section-title">
+            Personal Information
+        </div>
+
+
+        <div class="grid-3">
+
+
+            <div class="field">
+
+                <label>
+                    FATHER'S NAME
+                </label>
+
+                <input
+                    id="father"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    MOTHER'S NAME
+                </label>
+
+                <input
+                    id="mother"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    DATE OF BIRTH
+                </label>
+
+                <input
+                    id="dob"
+                    type="date"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    NID
+                </label>
+
+                <input
+                    id="nid"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    NATIONALITY
+                </label>
+
+                <select id="nationality">
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option>
+                        Bangladeshi
+                    </option>
+
+                    <option>
+                        Indian
+                    </option>
+
+                    <option>
+                        Pakistani
+                    </option>
+
+                    <option>
+                        Nepali
+                    </option>
+
+                    <option>
+                        Sri Lankan
+                    </option>
+
+                    <option>
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    RELIGION
+                </label>
+
+                <select id="religion">
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option>
+                        Islam
+                    </option>
+
+                    <option>
+                        Hinduism
+                    </option>
+
+                    <option>
+                        Buddhism
+                    </option>
+
+                    <option>
+                        Christianity
+                    </option>
+
+                    <option>
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    MARITAL STATUS
+                </label>
+
+                <select id="marital">
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option>
+                        Single
+                    </option>
+
+                    <option>
+                        Married
+                    </option>
+
+                    <option>
+                        Divorced
+                    </option>
+
+                    <option>
+                        Widowed
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    GENDER
+                </label>
+
+                <select id="gender">
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option>
+                        Male
+                    </option>
+
+                    <option>
+                        Female
+                    </option>
+
+                    <option>
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    BLOOD GROUP
+                </label>
+
+                <select id="blood">
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option>
+                        A+
+                    </option>
+
+                    <option>
+                        A-
+                    </option>
+
+                    <option>
+                        B+
+                    </option>
+
+                    <option>
+                        B-
+                    </option>
+
+                    <option>
+                        AB+
+                    </option>
+
+                    <option>
+                        AB-
+                    </option>
+
+                    <option>
+                        O+
+                    </option>
+
+                    <option>
+                        O-
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field full">
+
+                <label>
+                    PRESENT ADDRESS
+                </label>
+
+                <textarea
+                    id="presentAddress"
+                ></textarea>
+
+            </div>
+
+
+            <div class="field full">
+
+                <label>
+                    PERMANENT ADDRESS
+                </label>
+
+                <textarea
+                    id="permanentAddress"
+                ></textarea>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- SKILLS -->
+
+        <div class="section-title">
+            Key Skills
+        </div>
+
+
+        <div id="skillsContainer"></div>
+
+
+        <button
+            class="add-btn"
+            type="button"
+            onclick="addSkill()"
+        >
+            + Add Skill
+        </button>
+
+
+        <!-- EXPERIENCE -->
+
+        <div class="section-title">
+            Experience
+        </div>
+
+
+        <div id="experienceContainer"></div>
+
+
+        <button
+            class="add-btn"
+            type="button"
+            onclick="addExperience()"
+        >
+            + Add Experience
+        </button>
+
+
+        <!-- EDUCATION -->
+
+        <div class="section-title">
+            Education
+        </div>
+
+
+        <div id="educationContainer"></div>
+
+
+        <button
+            class="add-btn"
+            type="button"
+            onclick="addEducation()"
+        >
+            + Add Education
+        </button>
+
+
+        <!-- REFERENCES -->
+
+        <div class="section-title">
+            References
+        </div>
+
+
+        <div id="referencesContainer"></div>
+
+
+        <button
+            class="add-btn"
+            type="button"
+            onclick="addReference()"
+        >
+            + Add Reference
+        </button>
+
+
+    </div>
+
+
+    <!-- PREVIEW -->
+
+    <div class="preview-area">
+
+
+        <div class="preview-top">
+
+            <h2>
+                LIVE PREVIEW
+            </h2>
+
+
+            <button
+                class="download-btn"
+                id="downloadPdf"
+                type="button"
+            >
+                👁️ Watch Ad & Download PDF
+            </button>
+
+        </div>
+
+
+        <div class="cv-wrap">
+
+
+            <div
+                class="cv"
+                id="cv"
+            >
+
+
+                <!-- SIDEBAR -->
+
+                <aside class="sidebar">
+
+
+                    <div class="profile">
+
+
+                        <div
+                            id="cvNoPhoto"
+                            class="no-photo"
+                        >
+                            PHOTO
+                        </div>
+
+
+                        <img
+                            id="cvPhoto"
+                            alt="Profile Photo"
+                            style="display:none"
+                        >
+
+
+                    </div>
+
+
+                    <!-- CONTACT -->
+
+                    <div class="sidebar-section">
+
+                        <div class="sidebar-title">
+                            CONTACT
+                        </div>
+
+
+                        <div class="side-item">
+
+                            <span class="side-label">
+                                Phone
+                            </span>
+
+                            <span id="sidePhone"></span>
+
+                        </div>
+
+
+                        <div class="side-item">
+
+                            <span class="side-label">
+                                Email
+                            </span>
+
+                            <span id="sideEmail"></span>
+
+                        </div>
+
+
+                        <div class="side-item">
+
+                            <span class="side-label">
+                                Location
+                            </span>
+
+                            <span id="sideLocation"></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PERSONAL -->
+
+                    <div class="sidebar-section">
+
+                        <div class="sidebar-title">
+                            PERSONAL INFORMATION
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                Father's Name
+                            </span>
+                            <span id="sideFather"></span>
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                Mother's Name
+                            </span>
+                            <span id="sideMother"></span>
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                Date of Birth
+                            </span>
+                            <span id="sideDob"></span>
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                NID
+                            </span>
+                            <span id="sideNid"></span>
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                Nationality
+                            </span>
+                            <span id="sideNationality"></span>
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                Religion
+                            </span>
+                            <span id="sideReligion"></span>
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                Marital Status
+                            </span>
+                            <span id="sideMarital"></span>
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                Gender
+                            </span>
+                            <span id="sideGender"></span>
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                Blood Group
+                            </span>
+                            <span id="sideBlood"></span>
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                Present Address
+                            </span>
+                            <span id="sidePresent"></span>
+                        </div>
+
+
+                        <div class="side-item">
+                            <span class="side-label">
+                                Permanent Address
+                            </span>
+                            <span id="sidePermanent"></span>
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- SKILLS -->
+
+                    <div class="sidebar-section">
+
+                        <div class="sidebar-title">
+                            KEY SKILLS
+                        </div>
+
+
+                        <div
+                            id="cvSkills"
+                            class="skills"
+                        ></div>
+
+
+                    </div>
+
+
+                </aside>
+
+
+                <!-- MAIN -->
+
+                <main class="main">
+
+
+                    <div
+                        class="header-name"
+                        id="cvName"
+                    >
+                        YOUR NAME
+                    </div>
+
+
+                    <div
+                        class="header-job"
+                        id="cvJob"
+                    >
+                        PROFESSIONAL TITLE
+                    </div>
+
+
+                    <div class="decor-line">
+
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+
+                    <!-- ONLY PHONE + EMAIL + PRESENT LOCATION -->
+
+                    <div class="header-contact">
+
+
+                        <span>
+                            ✆
+                            <span id="headPhone"></span>
+                        </span>
+
+
+                        <span>
+                            ✉
+                            <span id="headEmail"></span>
+                        </span>
+
+
+                        <span>
+                            ⌖
+                            <span id="headLocation"></span>
+                        </span>
+
+
+                    </div>
+
+
+                    <!-- OBJECTIVE -->
+
+                    <section class="main-section">
+
+
+                        <div class="main-section-title">
+
+                            <div class="circle">
+                                ★
+                            </div>
+
+                            <h2>
+                                Career Objective
+                            </h2>
+
+                            <div class="rule"></div>
+
+                        </div>
+
+
+                        <div
+                            id="cvObjective"
+                            class="objective"
+                        >
+                            Professional career objective.
+                        </div>
+
+
+                    </section>
+
+
+                    <!-- EXPERIENCE -->
+
+                    <section class="main-section">
+
+
+                        <div class="main-section-title">
+
+                            <div class="circle">
+                                ●
+                            </div>
+
+                            <h2>
+                                Experience
+                            </h2>
+
+                            <div class="rule"></div>
+
+                        </div>
+
+
+                        <div
+                            id="cvExperience"
+                            class="timeline"
+                        ></div>
+
+
+                    </section>
+
+
+                    <!-- EDUCATION -->
+
+                    <section class="main-section">
+
+
+                        <div class="main-section-title">
+
+                            <div class="circle">
+                                ▣
+                            </div>
+
+                            <h2>
+                                Education
+                            </h2>
+
+                            <div class="rule"></div>
+
+                        </div>
+
+
+                        <div
+                            id="cvEducation"
+                        ></div>
+
+
+                    </section>
+
+
+                    <!-- REFERENCES -->
+
+                    <section class="main-section">
+
+
+                        <div class="main-section-title">
+
+                            <div class="circle">
+                                ✓
+                            </div>
+
+                            <h2>
+                                References
+                            </h2>
+
+                            <div class="rule"></div>
+
+                        </div>
+
+
+                        <div
+                            id="cvReferences"
+                        ></div>
+
+
+                    </section>
+
+
+                </main>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="app-footer">
+
+        <strong>
+            CV STUDIO PREMIUM @2026
+        </strong>
+
+        <span class="dev">
+            Developed by ARIF
+        </span>
+
+    </footer>
+
+
+</div>
+
+
+<!-- =====================================================
+     CROP MODAL
+===================================================== -->
+
+<div
+    id="cropModal"
+    class="crop-modal"
+>
+
+
+    <div class="crop-box">
+
+
+        <div class="crop-title">
+            ✂ Edit / Crop Profile Photo
+        </div>
+
+
+        <div class="crop-image-wrap">
+
+            <img
+                id="cropImage"
+                alt="Crop Photo"
+            >
+
+        </div>
+
+
+        <div class="crop-actions">
+
+
+            <button
+                type="button"
+                class="crop-cancel"
+                id="cropCancel"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="crop-apply"
+                id="cropApply"
+            >
+                ✓ Apply Crop
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   BASIC HELPERS
+===================================================== */
+
+const $ =
+    id => document.getElementById(id);
+
+
+function val(id){
+
+    return $(id)?.value?.trim() || "";
+
+}
+
+
+function esc(text){
+
+    return String(text || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function safeFileName(name){
+
+    return String(
+        name || "Professional-CV"
+    )
+    .replace(/[\\/:*?"<>|]/g,"")
+    .replace(/\s+/g,"-")
+    .substring(0,80);
+
+}
+
+
+/* =====================================================
+   SMART LINK
+===================================================== */
+
+const SMART_LINK =
+    "https://www.profitableratecpmnetwork.com/yu7wq6y9ip?key=ed62bd1d2afb3e11ac262ef72e673419";
+
+
+/* =====================================================
+   EDUCATION OPTIONS
+===================================================== */
+
+const degreeOptions = [
+
+    "SSC",
+    "HSC",
+    "Diploma",
+    "B.A",
+    "B.Sc",
+    "B.Com",
+    "B.B.A",
+    "B.S.S",
+    "B.Tech",
+    "B.Sc Engineering",
+    "LL.B",
+    "M.A",
+    "M.Sc",
+    "M.Com",
+    "MBA",
+    "M.S.S",
+    "M.Tech",
+    "M.Phil",
+    "PhD",
+    "Other"
+
+];
+
+
+const groupOptions = [
+
+    "Science",
+    "Arts",
+    "Humanities",
+    "Commerce",
+    "Business Studies",
+    "Vocational",
+    "Engineering",
+    "Computer Science",
+    "Electrical Engineering",
+    "Mechanical Engineering",
+    "Civil Engineering",
+    "Marketing",
+    "Management",
+    "Accounting",
+    "Finance",
+    "Other"
+
+];
+
+
+const boardOptions = [
+
+    "Dhaka",
+    "Rajshahi",
+    "Cumilla",
+    "Jashore",
+    "Chattogram",
+    "Barishal",
+    "Sylhet",
+    "Dinajpur",
+    "Mymensingh",
+    "Madrasah",
+    "Technical",
+    "Other"
+
+];
+
+
+function yearOptions(){
+
+    let html =
+        '<option value="">Select Year</option>';
+
+    const current =
+        new Date().getFullYear();
+
+    for(
+        let y=current;
+        y>=1970;
+        y--
+    ){
+
+        html +=
+            `<option value="${y}">${y}</option>`;
+
+    }
+
+    return html;
+
+}
+
+
+/* =====================================================
+   SKILLS
+===================================================== */
+
+let skillCount = 0;
+
+
+function addSkill(){
+
+    skillCount++;
+
+
+    const div =
+        document.createElement("div");
+
+
+    div.className =
+        "dynamic-card";
+
+
+    div.innerHTML = `
+
+        <div class="dynamic-head">
+
+            <strong>
+                Skill ${skillCount}
+            </strong>
+
+            <button
+                type="button"
+                class="remove-btn"
+            >
+                Remove
+            </button>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                SKILL
+            </label>
+
+            <input
+                class="skill-input"
+                type="text"
+                placeholder="e.g. Data Entry"
+            >
+
+        </div>
+
+    `;
+
+
+    div.querySelector(".remove-btn")
+        .addEventListener(
+            "click",
+            function(){
+
+                div.remove();
+
+                render();
+
+            }
+        );
+
+
+    $("skillsContainer")
+        .appendChild(div);
+
+
+    attachLive(div);
+
+}
+
+
+/* =====================================================
+   EXPERIENCE
+===================================================== */
+
+let experienceCount = 0;
+
+
+function addExperience(){
+
+    experienceCount++;
+
+
+    const div =
+        document.createElement("div");
+
+
+    div.className =
+        "dynamic-card";
+
+
+    div.innerHTML = `
+
+        <div class="dynamic-head">
+
+            <strong>
+                Experience ${experienceCount}
+            </strong>
+
+            <button
+                type="button"
+                class="remove-btn"
+            >
+                Remove
+            </button>
+
+        </div>
+
+
+        <div class="grid">
+
+
+            <div class="field">
+
+                <label>
+                    JOB TITLE
+                </label>
+
+                <input
+                    class="exp-title-input"
+                    type="text"
+                    placeholder="Quality Inspector"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    COMPANY
+                </label>
+
+                <input
+                    class="exp-company-input"
+                    type="text"
+                    placeholder="Company Name"
+                >
+
+            </div>
+
+
+            <div class="field full">
+
+                <label>
+                    DURATION
+                </label>
+
+                <input
+                    class="exp-duration-input"
+                    type="text"
+                    placeholder="2024 - Present"
+                >
+
+            </div>
+
+
+            <div class="field full">
+
+                <label>
+                    DESCRIPTION / RESPONSIBILITIES
+                </label>
+
+                <textarea
+                    class="exp-description-input"
+                    placeholder="Describe responsibilities, achievements and duties..."
+                ></textarea>
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    div.querySelector(".remove-btn")
+        .addEventListener(
+            "click",
+            function(){
+
+                div.remove();
+
+                render();
+
+            }
+        );
+
+
+    $("experienceContainer")
+        .appendChild(div);
+
+
+    attachLive(div);
+
+}
+
+
+/* =====================================================
+   EDUCATION
+===================================================== */
+
+let educationCount = 0;
+
+
+function addEducation(){
+
+    educationCount++;
+
+
+    const div =
+        document.createElement("div");
+
+
+    div.className =
+        "dynamic-card";
+
+
+    let degreeHTML =
+        '<option value="">Select Degree</option>';
+
+
+    degreeOptions.forEach(item=>{
+
+        degreeHTML +=
+            `<option>${item}</option>`;
+
+    });
+
+
+    let groupHTML =
+        '<option value="">Select Group</option>';
+
+
+    groupOptions.forEach(item=>{
+
+        groupHTML +=
+            `<option>${item}</option>`;
+
+    });
+
+
+    let boardHTML =
+        '<option value="">Select Board</option>';
+
+
+    boardOptions.forEach(item=>{
+
+        boardHTML +=
+            `<option>${item}</option>`;
+
+    });
+
+
+    div.innerHTML = `
+
+        <div class="dynamic-head">
+
+            <strong>
+                Education ${educationCount}
+            </strong>
+
+            <button
+                type="button"
+                class="remove-btn"
+            >
+                Remove
+            </button>
+
+        </div>
+
+
+        <div class="grid-3">
+
+
+            <div class="field">
+
+                <label>
+                    DEGREE
+                </label>
+
+                <select class="edu-degree-input">
+                    ${degreeHTML}
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    GROUP
+                </label>
+
+                <select class="edu-group-input">
+                    ${groupHTML}
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    PASSING YEAR
+                </label>
+
+                <select class="edu-year-input">
+                    ${yearOptions()}
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    INSTITUTION
+                </label>
+
+                <input
+                    class="edu-institution-input"
+                    type="text"
+                    placeholder="College / University"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    BOARD
+                </label>
+
+                <select class="edu-board-input">
+                    ${boardHTML}
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    RESULT
+                </label>
+
+                <input
+                    class="edu-result-input"
+                    type="text"
+                    placeholder="GPA / CGPA / Division"
+                >
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    div.querySelector(".remove-btn")
+        .addEventListener(
+            "click",
+            function(){
+
+                div.remove();
+
+                render();
+
+            }
+        );
+
+
+    $("educationContainer")
+        .appendChild(div);
+
+
+    attachLive(div);
+
+}
+
+
+/* =====================================================
+   REFERENCES
+===================================================== */
+
+let referenceCount = 0;
+
+
+function addReference(){
+
+    referenceCount++;
+
+
+    const div =
+        document.createElement("div");
+
+
+    div.className =
+        "dynamic-card";
+
+
+    div.innerHTML = `
+
+        <div class="dynamic-head">
+
+            <strong>
+                Reference ${referenceCount}
+            </strong>
+
+            <button
+                type="button"
+                class="remove-btn"
+            >
+                Remove
+            </button>
+
+        </div>
+
+
+        <div class="grid">
+
+
+            <div class="field">
+
+                <label>
+                    NAME
+                </label>
+
+                <input
+                    class="ref-name-input"
+                    type="text"
+                    placeholder="Reference Name"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    DESIGNATION
+                </label>
+
+                <input
+                    class="ref-designation-input"
+                    type="text"
+                    placeholder="Manager / Professor"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    ORGANIZATION
+                </label>
+
+                <input
+                    class="ref-organization-input"
+                    type="text"
+                    placeholder="Organization"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    PHONE / EMAIL
+                </label>
+
+                <input
+                    class="ref-contact-input"
+                    type="text"
+                    placeholder="Contact information"
+                >
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    div.querySelector(".remove-btn")
+        .addEventListener(
+            "click",
+            function(){
+
+                div.remove();
+
+                render();
+
+            }
+        );
+
+
+    $("referencesContainer")
+        .appendChild(div);
+
+
+    attachLive(div);
+
+}
+
+
+/* =====================================================
+   PHOTO + CROP
+===================================================== */
+
+let cropper = null;
+
+let croppedPhotoData = "";
+
+
+/* PHOTO SELECT */
+
+$("photo")
+.addEventListener(
+    "change",
+    function(){
+
+        const file =
+            this.files[0];
+
+
+        if(!file)
+            return;
+
+
+        if(
+            !file.type.startsWith("image/")
+        ){
+
+            alert(
+                "Please select an image file."
+            );
+
+            this.value = "";
+
+            return;
+
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            function(e){
+
+                openCropper(
+                    e.target.result
+                );
+
+            };
+
+
+        reader.readAsDataURL(file);
+
+    }
+);
+
+
+/* OPEN CROPPER */
+
+function openCropper(src){
+
+    $("cropImage").src =
+        src;
+
+
+    $("cropModal").style.display =
+        "flex";
+
+
+    if(cropper){
+
+        cropper.destroy();
+
+        cropper = null;
+
+    }
+
+
+    $("cropImage").onload =
+        function(){
+
+            cropper =
+                new Cropper(
+                    $("cropImage"),
+                    {
+
+                        aspectRatio:1,
+
+                        viewMode:1,
+
+                        dragMode:"move",
+
+                        autoCropArea:.9,
+
+                        responsive:true,
+
+                        background:false,
+
+                        guides:true,
+
+                        center:true,
+
+                        highlight:false,
+
+                        zoomable:true,
+
+                        movable:true,
+
+                        rotatable:true
+
+                    }
+                );
+
+        };
+
+}
+
+
+/* EDIT PHOTO */
+
+$("editPhotoBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        if(!croppedPhotoData){
+
+            alert(
+                "Please select a photo first."
+            );
+
+            return;
+
+        }
+
+
+        openCropper(
+            croppedPhotoData
+        );
+
+    }
+);
+
+
+/* APPLY CROP */
+
+$("cropApply")
+.addEventListener(
+    "click",
+    function(){
+
+        if(!cropper)
+            return;
+
+
+        const canvas =
+            cropper.getCroppedCanvas({
+
+                width:1000,
+
+                height:1000,
+
+                imageSmoothingEnabled:true,
+
+                imageSmoothingQuality:"high"
+
+            });
+
+
+        croppedPhotoData =
+            canvas.toDataURL(
+                "image/jpeg",
+                .95
+            );
+
+
+        /* FORM PREVIEW */
+
+        $("photoPreview").src =
+            croppedPhotoData;
+
+
+        $("photoPreview").style.display =
+            "block";
+
+
+        $("photoPlaceholder").style.display =
+            "none";
+
+
+        $("editPhotoBtn").style.display =
+            "block";
+
+
+        /* CV PREVIEW */
+
+        $("cvPhoto").src =
+            croppedPhotoData;
+
+
+        $("cvPhoto").style.display =
+            "block";
+
+
+        $("cvNoPhoto").style.display =
+            "none";
+
+
+        closeCropper();
+
+
+        render();
+
+    }
+);
+
+
+/* CANCEL */
+
+$("cropCancel")
+.addEventListener(
+    "click",
+    closeCropper
+);
+
+
+function closeCropper(){
+
+    $("cropModal").style.display =
+        "none";
+
+
+    if(cropper){
+
+        cropper.destroy();
+
+        cropper = null;
+
+    }
+
+}
+
+
+/* CLICK OUTSIDE */
+
+$("cropModal")
+.addEventListener(
+    "click",
+    function(e){
+
+        if(e.target === this){
+
+            closeCropper();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   LIVE INPUT
+===================================================== */
+
+function attachLive(container){
+
+    container
+    .querySelectorAll(
+        "input,textarea,select"
+    )
+    .forEach(el=>{
+
+        el.addEventListener(
+            "input",
+            render
+        );
+
+        el.addEventListener(
+            "change",
+            render
+        );
+
+    });
+
+}
+
+
+document
+.querySelectorAll(
+    "body input, body textarea, body select"
+)
+.forEach(el=>{
+
+    el.setAttribute(
+        "autocomplete",
+        "off"
+    );
+
+    el.setAttribute(
+        "autocorrect",
+        "off"
+    );
+
+    el.setAttribute(
+        "autocapitalize",
+        "off"
+    );
+
+    el.setAttribute(
+        "spellcheck",
+        "false"
+    );
+
+
+    if(el.id !== "photo"){
+
+        el.addEventListener(
+            "input",
+            render
+        );
+
+        el.addEventListener(
+            "change",
+            render
+        );
+
+    }
+
+});
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function formatDate(date){
+
+    if(!date)
+        return "";
+
+
+    const parts =
+        date.split("-");
+
+
+    if(parts.length !== 3)
+        return date;
+
+
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+}
+
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function render(){
+
+
+    /* BASIC */
+
+    $("cvName").textContent =
+        val("fullName").toUpperCase()
+        ||
+        "YOUR NAME";
+
+
+    $("cvJob").textContent =
+        val("jobTitle").toUpperCase()
+        ||
+        "PROFESSIONAL TITLE";
+
+
+    $("headPhone").textContent =
+        val("phone");
+
+
+    $("headEmail").textContent =
+        val("email");
+
+
+    $("headLocation").textContent =
+        val("location");
+
+
+    /* SIDEBAR CONTACT */
+
+    $("sidePhone").textContent =
+        val("phone");
+
+
+    $("sideEmail").textContent =
+        val("email");
+
+
+    $("sideLocation").textContent =
+        val("location");
+
+
+    /* PERSONAL */
+
+    $("sideFather").textContent =
+        val("father");
+
+
+    $("sideMother").textContent =
+        val("mother");
+
+
+    $("sideDob").textContent =
+        formatDate(
+            val("dob")
+        );
+
+
+    $("sideNid").textContent =
+        val("nid");
+
+
+    $("sideNationality").textContent =
+        val("nationality");
+
+
+    $("sideReligion").textContent =
+        val("religion");
+
+
+    $("sideMarital").textContent =
+        val("marital");
+
+
+    $("sideGender").textContent =
+        val("gender");
+
+
+    $("sideBlood").textContent =
+        val("blood");
+
+
+    $("sidePresent").textContent =
+        val("presentAddress");
+
+
+    $("sidePermanent").textContent =
+        val("permanentAddress");
+
+
+    /* OBJECTIVE */
+
+    $("cvObjective").textContent =
+        val("objective")
+        ||
+        "Professional and motivated individual seeking an opportunity to contribute skills, experience and dedication while developing a successful career.";
+
+
+    /* =================================================
+       SKILLS
+    ================================================= */
+
+    const skills = [];
+
+
+    document
+    .querySelectorAll(
+        "#skillsContainer .dynamic-card"
+    )
+    .forEach(card=>{
+
+        const value =
+            card.querySelector(
+                ".skill-input"
+            )?.value.trim();
+
+
+        if(value)
+            skills.push(value);
+
+    });
+
+
+    $("cvSkills").innerHTML =
+        skills.length
+        ?
+        skills.map(s=>`
+
+            <span class="skill">
+                ${esc(s)}
+            </span>
+
+        `).join("")
+        :
+        `
+
+            <span
+                class="skill"
+                style="opacity:.65"
+            >
+                Add skills
+            </span>
+
+        `;
+
+
+    /* =================================================
+       EXPERIENCE
+    ================================================= */
+
+    const experiences = [];
+
+
+    document
+    .querySelectorAll(
+        "#experienceContainer .dynamic-card"
+    )
+    .forEach(card=>{
+
+
+        const title =
+            card.querySelector(
+                ".exp-title-input"
+            )?.value.trim();
+
+
+        const company =
+            card.querySelector(
+                ".exp-company-input"
+            )?.value.trim();
+
+
+        const duration =
+            card.querySelector(
+                ".exp-duration-input"
+            )?.value.trim();
+
+
+        const description =
+            card.querySelector(
+                ".exp-description-input"
+            )?.value.trim();
+
+
+        if(
+            title ||
+            company ||
+            duration ||
+            description
+        ){
+
+            experiences.push({
+
+                title,
+                company,
+                duration,
+                description
+
+            });
+
+        }
+
+    });
+
+
+    $("cvExperience").innerHTML =
+        experiences.length
+        ?
+        experiences.map(e=>`
+
+            <div class="exp">
+
+                <div class="exp-title">
+                    ${esc(e.title || "Position")}
+                </div>
+
+                <div class="exp-company">
+                    ${esc(e.company)}
+                </div>
+
+                <div class="exp-duration">
+                    ${esc(e.duration)}
+                </div>
+
+                <div class="exp-description">
+                    ${esc(e.description)}
+                </div>
+
+            </div>
+
+        `).join("")
+        :
+        `
+
+            <div
+                style="
+                    font-size:9px;
+                    color:#8a92a0;
+                "
+            >
+                Add your professional experience.
+            </div>
+
+        `;
+
+
+    /* =================================================
+       EDUCATION
+    ================================================= */
+
+    const education = [];
+
+
+    document
+    .querySelectorAll(
+        "#educationContainer .dynamic-card"
+    )
+    .forEach(card=>{
+
+
+        const degree =
+            card.querySelector(
+                ".edu-degree-input"
+            )?.value.trim();
+
+
+        const group =
+            card.querySelector(
+                ".edu-group-input"
+            )?.value.trim();
+
+
+        const year =
+            card.querySelector(
+                ".edu-year-input"
+            )?.value.trim();
+
+
+        const institution =
+            card.querySelector(
+                ".edu-institution-input"
+            )?.value.trim();
+
+
+        const board =
+            card.querySelector(
+                ".edu-board-input"
+            )?.value.trim();
+
+
+        const result =
+            card.querySelector(
+                ".edu-result-input"
+            )?.value.trim();
+
+
+        if(
+            degree ||
+            group ||
+            year ||
+            institution ||
+            board ||
+            result
+        ){
+
+            education.push({
+
+                degree,
+                group,
+                year,
+                institution,
+                board,
+                result
+
+            });
+
+        }
+
+    });
+
+
+    if(education.length){
+
+        $("cvEducation").innerHTML = `
+
+            <table class="edu-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Degree
+                        </th>
+
+                        <th>
+                            Institution
+                        </th>
+
+                        <th>
+                            Group
+                        </th>
+
+                        <th>
+                            Board
+                        </th>
+
+                        <th>
+                            Result
+                        </th>
+
+                        <th>
+                            Year
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    ${education.map(e=>`
+
+                        <tr>
+
+                            <td>
+                                ${esc(e.degree)}
+                            </td>
+
+                            <td>
+                                ${esc(e.institution)}
+                            </td>
+
+                            <td>
+                                ${esc(e.group)}
+                            </td>
+
+                            <td>
+                                ${esc(e.board)}
+                            </td>
+
+                            <td>
+                                ${esc(e.result)}
+                            </td>
+
+                            <td>
+                                ${esc(e.year)}
+                            </td>
+
+                        </tr>
+
+                    `).join("")}
+
+                </tbody>
+
+            </table>
+
+        `;
+
+    }else{
+
+        $("cvEducation").innerHTML = `
+
+            <div
+                style="
+                    font-size:9px;
+                    color:#8a92a0;
+                "
+            >
+                Add your educational qualifications.
+            </div>
+
+        `;
+
+    }
+
+
+    /* =================================================
+       REFERENCES
+    ================================================= */
+
+    const references = [];
+
+
+    document
+    .querySelectorAll(
+        "#referencesContainer .dynamic-card"
+    )
+    .forEach(card=>{
+
+
+        const name =
+            card.querySelector(
+                ".ref-name-input"
+            )?.value.trim();
+
+
+        const designation =
+            card.querySelector(
+                ".ref-designation-input"
+            )?.value.trim();
+
+
+        const organization =
+            card.querySelector(
+                ".ref-organization-input"
+            )?.value.trim();
+
+
+        const contact =
+            card.querySelector(
+                ".ref-contact-input"
+            )?.value.trim();
+
+
+        if(
+            name ||
+            designation ||
+            organization ||
+            contact
+        ){
+
+            references.push({
+
+                name,
+                designation,
+                organization,
+                contact
+
+            });
+
+        }
+
+    });
+
+
+    $("cvReferences").innerHTML =
+        references.length
+        ?
+        references.map(r=>`
+
+            <div class="reference">
+
+                <div class="ref-name">
+                    ${esc(r.name)}
+                </div>
+
+                <div class="ref-info">
+
+                    ${esc(r.designation)}
+
+                    ${
+                        r.organization
+                        ?
+                        " • " +
+                        esc(r.organization)
+                        :
+                        ""
+                    }
+
+                    ${
+                        r.contact
+                        ?
+                        "<br>" +
+                        esc(r.contact)
+                        :
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+        `).join("")
+        :
+        `
+
+            <div
+                style="
+                    font-size:9px;
+                    color:#8a92a0;
+                "
+            >
+                Available upon request
+            </div>
+
+        `;
+
+}
+
+
+/* =====================================================
+   WAIT FOR IMAGES
+===================================================== */
+
+async function waitForImages(container){
+
+    const images =
+        container.querySelectorAll("img");
+
+
+    await Promise.all(
+
+        Array.from(images).map(img=>{
+
+            if(img.complete){
+
+                return Promise.resolve();
+
+            }
+
+
+            return new Promise(resolve=>{
+
+                img.onload =
+                    resolve;
+
+                img.onerror =
+                    resolve;
+
+            });
+
+        })
+
+    );
+
+}
+
+
+/* =====================================================
+   V10 SMART LINK + PDF
+===================================================== */
+
+async function downloadPDF(){
+
+    const button =
+        $("downloadPdf");
+
+
+    const oldText =
+        button.innerHTML;
+
+
+    button.disabled =
+        true;
+
+
+    button.innerHTML =
+        "⏳ Opening Ad...";
+
+
+    try{
+
+        /*
+           OPEN SMART LINK
+        */
+
+        const adWindow =
+            window.open(
+                SMART_LINK,
+                "_blank"
+            );
+
+
+        /*
+           POPUP BLOCK CHECK
+        */
+
+        if(!adWindow){
+
+            button.disabled =
+                false;
+
+            button.innerHTML =
+                oldText;
+
+            alert(
+                "⚠️ Please allow pop-ups for this website, then click the button again."
+            );
+
+            return;
+
+        }
+
+
+        /*
+           WAIT FOR AD
+        */
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    5000
+                )
+        );
+
+
+        /*
+           PREPARE PDF
+        */
+
+        button.innerHTML =
+            "⏳ Preparing PDF...";
+
+
+        render();
+
+
+        await new Promise(
+            resolve =>
+                requestAnimationFrame(
+                    () =>
+                        requestAnimationFrame(
+                            resolve
+                        )
+                )
+        );
+
+
+        await waitForImages(
+            $("cv")
+        );
+
+
+        /*
+           PDF MODE
+        */
+
+        document.body.classList.add(
+            "pdf-mode"
+        );
+
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    300
+                )
+        );
+
+
+        /*
+           NATIVE PDF PRINT
+        */
+
+        window.print();
+
+
+        /*
+           RESTORE PAGE
+        */
+
+        setTimeout(
+            ()=>{
+                document.body.classList.remove(
+                    "pdf-mode"
+                );
+            },
+            1000
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "PDF ERROR:",
+            error
+        );
+
+
+        document.body.classList.remove(
+            "pdf-mode"
+        );
+
+
+        alert(
+            "❌ PDF preparation failed.\n\n"
+            +
+            error.message
+        );
+
+    }
+
+
+    button.disabled =
+        false;
+
+
+    button.innerHTML =
+        oldText;
+
+}
+
+
+/* =====================================================
+   PRINT EVENT
+===================================================== */
+
+window.addEventListener(
+    "afterprint",
+    function(){
+
+        document.body.classList.remove(
+            "pdf-mode"
+        );
+
+    }
+);
+
+
+/* =====================================================
+   DOWNLOAD BUTTON
+===================================================== */
+
+$("downloadPdf")
+.addEventListener(
+    "click",
+    downloadPDF
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+render();
+
+</script>
+
+</body>
+</html>
